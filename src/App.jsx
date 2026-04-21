@@ -26,6 +26,10 @@ const App = () => {
     setTransactions([...transactions, transaction])
   }
 
+  const handleDeleteTransaction = (transactionId) => {
+    setTransactions(transactions.filter((transaction) => transaction.id !== transactionId))
+  }
+
   return (
     <main className="app-shell">
       <div className="app-backdrop app-backdrop-left" />
@@ -46,7 +50,10 @@ const App = () => {
           <SpendingByCategoryChart transactions={normalizedTransactions} />
         </section>
 
-        <TransactionList transactions={normalizedTransactions} />
+        <TransactionList
+          transactions={normalizedTransactions}
+          onDeleteTransaction={handleDeleteTransaction}
+        />
       </div>
     </main>
   )

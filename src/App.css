@@ -426,6 +426,29 @@ td {
   color: #ff89a6;
 }
 
+.row-action-btn {
+  min-height: 36px;
+  border: 1px solid rgba(255, 137, 166, 0.24);
+  border-radius: 999px;
+  padding: 0 14px;
+  background: rgba(255, 137, 166, 0.12);
+  color: #ff89a6;
+  font: inherit;
+  font-size: 0.83rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.row-action-btn:hover {
+  background: rgba(255, 137, 166, 0.18);
+  border-color: rgba(255, 137, 166, 0.34);
+  transform: translateY(-1px);
+}
+
 @media (max-width: 980px) {
   .hero-card,
   .content-grid,

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { categories } from '../constants/categories'
 import { currencyFormatter, dateFormatter, labelize } from '../utils/formatters'
 
-const TransactionList = ({ transactions }) => {
+const TransactionList = ({ transactions, onDeleteTransaction }) => {
   const [filterType, setFilterType] = useState('all')
   const [filterCategory, setFilterCategory] = useState('all')
 
@@ -47,6 +47,7 @@ const TransactionList = ({ transactions }) => {
               <th>Category</th>
               <th>Type</th>
               <th>Amount</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
@@ -63,6 +64,19 @@ const TransactionList = ({ transactions }) => {
                 <td className={transaction.type === 'income' ? 'income-amount' : 'expense-amount'}>
                   {transaction.type === 'income' ? '+' : '-'}
                   {currencyFormatter.format(transaction.amount)}
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    className="row-action-btn"
+                    onClick={() => {
+                      if (window.confirm('Delete this transaction?')) {
+                        onDeleteTransaction(transaction.id)
+                      }
+                    }}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
