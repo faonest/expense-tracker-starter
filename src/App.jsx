@@ -1,24 +1,13 @@
 import { useState } from 'react'
 import './App.css'
+import { categories } from './constants/categories'
 import Highlights from './components/Highlights'
 import SpendingByCategoryChart from './components/SpendingByCategoryChart'
 import Summary from './components/Summary'
 import TransactionForm from './components/TransactionForm'
 import TransactionList from './components/TransactionList'
 import { currencyFormatter, labelize } from './utils/formatters'
-
-const categories = ['food', 'housing', 'utilities', 'transport', 'entertainment', 'salary', 'other']
-
-function normalizeTransaction(transaction) {
-  const parsedAmount = Number(transaction.amount)
-
-  return {
-    ...transaction,
-    amount: Number.isFinite(parsedAmount) ? Math.abs(parsedAmount) : 0,
-    type: typeof transaction.type === 'string' ? transaction.type.trim().toLowerCase() : '',
-    category: typeof transaction.category === 'string' ? transaction.category.trim().toLowerCase() : 'other',
-  }
-}
+import { normalizeTransaction } from './utils/transactions'
 
 function App() {
   const [transactions, setTransactions] = useState([
@@ -138,11 +127,7 @@ function App() {
           </div>
         </section>
 
-        <Summary
-          totalIncome={totalIncome}
-          totalExpenses={totalExpenses}
-          balance={balance}
-        />
+        <Summary transactions={normalizedTransactions} />
 
         <section className="content-grid">
           <div className="left-rail">
