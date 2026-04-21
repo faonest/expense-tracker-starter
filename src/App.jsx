@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import './App.css'
+import Highlights from './components/Highlights'
 import SpendingByCategoryChart from './components/SpendingByCategoryChart'
 import Summary from './components/Summary'
 import TransactionForm from './components/TransactionForm'
 import TransactionList from './components/TransactionList'
-import { currencyFormatter } from './utils/formatters'
+import { currencyFormatter, labelize } from './utils/formatters'
 
 const categories = ['food', 'housing', 'utilities', 'transport', 'entertainment', 'salary', 'other']
 
@@ -54,23 +55,22 @@ function App() {
 
   const totalIncome = totals.income
   const totalExpenses = totals.expenses
-
   const balance = totalIncome - totalExpenses
 
   const spendingByCategory = normalizedTransactions
     .filter((transaction) => transaction.type === 'expense')
-    .reduce((totals, transaction) => {
-      const existingCategory = totals.find((item) => item.name === transaction.category)
+    .reduce((totalsByCategory, transaction) => {
+      const existingCategory = totalsByCategory.find((item) => item.name === transaction.category)
 
       if (existingCategory) {
         existingCategory.value += transaction.amount
       } else {
-        totals.push({ name: transaction.category, value: transaction.amount })
+        totalsByCategory.push({ name: transaction.category, value: transaction.amount })
       }
 
-      return totals
+      return totalsByCategory
     }, [])
-    .sort((left, right) => right.value - left.value);
+    .sort((left, right) => right.value - left.value)
 
   let filteredTransactions = normalizedTransactions
   if (filterType !== 'all') {
@@ -87,8 +87,8 @@ function App() {
   const largestExpense = spendingByCategory[0]
   const savingsRate = totalIncome > 0 ? Math.round((balance / totalIncome) * 100) : 0
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = (event) => {
+    event.preventDefault()
     if (!description || !amount) return
 
     const newTransaction = {
@@ -132,7 +132,7 @@ function App() {
               </div>
               <div className="hero-insight">
                 <span>Largest category</span>
-                <strong>{largestExpense ? largestExpense.name : 'None'}</strong>
+                <strong>{largestExpense ? labelize(largestExpense.name) : 'None'}</strong>
               </div>
             </div>
           </div>
@@ -159,31 +159,7 @@ function App() {
               onSubmit={handleSubmit}
             />
 
-            <section className="highlights-card">
-              <div className="section-heading">
-                <div>
-                  <p className="section-label">Highlights</p>
-                  <h2>Recent activity</h2>
-                </div>
-              </div>
-
-              <div className="highlight-list">
-                {recentTransactions.map((transaction) => (
-                  <div key={transaction.id} className="highlight-item">
-                    <div>
-                      <p className="highlight-title">{transaction.description}</p>
-                      <p className="highlight-meta">
-                        {transaction.category} • {transaction.date}
-                      </p>
-                    </div>
-                    <strong className={transaction.type === 'income' ? 'income-amount' : 'expense-amount'}>
-                      {transaction.type === 'income' ? '+' : '-'}
-                      {currencyFormatter.format(transaction.amount)}
-                    </strong>
-                  </div>
-                ))}
-              </div>
-            </section>
+            <Highlights transactions={recentTransactions} />
           </div>
 
           <SpendingByCategoryChart
