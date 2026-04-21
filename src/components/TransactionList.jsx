@@ -1,13 +1,13 @@
 import { currencyFormatter, dateFormatter, labelize } from '../utils/formatters'
 
-function TransactionList({
+const TransactionList = ({
   transactions,
   categories,
   filterType,
   filterCategory,
   onFilterTypeChange,
   onFilterCategoryChange,
-}) {
+}) => {
   return (
     <section className="transactions">
       <div className="section-heading">

@@ -1,6 +1,6 @@
 import { currencyFormatter } from '../utils/formatters'
 
-function Summary({ transactions }) {
+const Summary = ({ transactions }) => {
   const totals = transactions.reduce((summary, transaction) => {
     if (transaction.type === 'income') {
       summary.income += transaction.amount

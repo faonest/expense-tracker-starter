@@ -1,15 +1,30 @@
-function TransactionForm({
-  description,
-  amount,
-  type,
-  category,
-  categories,
-  onDescriptionChange,
-  onAmountChange,
-  onTypeChange,
-  onCategoryChange,
-  onSubmit,
-}) {
+import { useState } from 'react'
+
+const TransactionForm = ({ categories, onAddTransaction }) => {
+  const [description, setDescription] = useState('')
+  const [amount, setAmount] = useState('')
+  const [type, setType] = useState('expense')
+  const [category, setCategory] = useState('food')
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (!description || !amount) return
+
+    onAddTransaction({
+      id: Date.now(),
+      description,
+      amount: Number(amount),
+      type,
+      category,
+      date: new Date().toISOString().split('T')[0],
+    })
+
+    setDescription('')
+    setAmount('')
+    setType('expense')
+    setCategory('food')
+  }
+
   return (
     <section className="add-transaction">
       <div className="section-heading">
@@ -20,14 +35,14 @@ function TransactionForm({
         <p className="section-caption">Capture a new income or expense in one pass.</p>
       </div>
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={handleSubmit}>
         <label className="field field-wide">
           <span>Description</span>
           <input
             type="text"
             placeholder="Freelance payment"
             value={description}
-            onChange={(event) => onDescriptionChange(event.target.value)}
+            onChange={(event) => setDescription(event.target.value)}
           />
         </label>
         <label className="field">
@@ -36,19 +51,19 @@ function TransactionForm({
             type="number"
             placeholder="0"
             value={amount}
-            onChange={(event) => onAmountChange(event.target.value)}
+            onChange={(event) => setAmount(event.target.value)}
           />
         </label>
         <label className="field">
           <span>Type</span>
-          <select value={type} onChange={(event) => onTypeChange(event.target.value)}>
+          <select value={type} onChange={(event) => setType(event.target.value)}>
             <option value="income">Income</option>
             <option value="expense">Expense</option>
           </select>
         </label>
         <label className="field">
           <span>Category</span>
-          <select value={category} onChange={(event) => onCategoryChange(event.target.value)}>
+          <select value={category} onChange={(event) => setCategory(event.target.value)}>
             {categories.map((item) => (
               <option key={item} value={item}>{item}</option>
             ))}

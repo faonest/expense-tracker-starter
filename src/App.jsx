@@ -9,7 +9,7 @@ import TransactionList from './components/TransactionList'
 import { currencyFormatter, labelize } from './utils/formatters'
 import { normalizeTransaction } from './utils/transactions'
 
-function App() {
+const App = () => {
   const [transactions, setTransactions] = useState([
     { id: 1, description: 'Salary', amount: 5000, type: 'income', category: 'salary', date: '2025-01-01' },
     { id: 2, description: 'Rent', amount: 1200, type: 'expense', category: 'housing', date: '2025-01-02' },
@@ -21,10 +21,6 @@ function App() {
     { id: 8, description: 'Netflix', amount: 15, type: 'expense', category: 'entertainment', date: '2025-01-10' },
   ])
 
-  const [description, setDescription] = useState('')
-  const [amount, setAmount] = useState('')
-  const [type, setType] = useState('expense')
-  const [category, setCategory] = useState('food')
   const [filterType, setFilterType] = useState('all')
   const [filterCategory, setFilterCategory] = useState('all')
 
@@ -76,24 +72,8 @@ function App() {
   const largestExpense = spendingByCategory[0]
   const savingsRate = totalIncome > 0 ? Math.round((balance / totalIncome) * 100) : 0
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    if (!description || !amount) return
-
-    const newTransaction = {
-      id: Date.now(),
-      description,
-      amount: Number(amount),
-      type,
-      category,
-      date: new Date().toISOString().split('T')[0],
-    }
-
-    setTransactions([...transactions, newTransaction])
-    setDescription('')
-    setAmount('')
-    setType('expense')
-    setCategory('food')
+  const handleAddTransaction = (transaction) => {
+    setTransactions([...transactions, transaction])
   }
 
   return (
@@ -132,16 +112,8 @@ function App() {
         <section className="content-grid">
           <div className="left-rail">
             <TransactionForm
-              description={description}
-              amount={amount}
-              type={type}
-              category={category}
               categories={categories}
-              onDescriptionChange={setDescription}
-              onAmountChange={setAmount}
-              onTypeChange={setType}
-              onCategoryChange={setCategory}
-              onSubmit={handleSubmit}
+              onAddTransaction={handleAddTransaction}
             />
 
             <Highlights transactions={recentTransactions} />

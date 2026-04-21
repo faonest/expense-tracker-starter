@@ -1,6 +1,6 @@
 import { currencyFormatter, labelize } from '../utils/formatters'
 
-function Highlights({ transactions }) {
+const Highlights = ({ transactions }) => {
   return (
     <section className="highlights-card">
       <div className="section-heading">

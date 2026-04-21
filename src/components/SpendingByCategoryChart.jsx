@@ -13,7 +13,7 @@ import { currencyFormatter, labelize } from '../utils/formatters'
 
 const chartColors = ['#54e2df', '#7a6dff', '#ff89a6', '#ffb25c', '#6ac7ff', '#79f0b4', '#c09bff']
 
-function SpendingByCategoryChart({ data, totalExpenses }) {
+const SpendingByCategoryChart = ({ data, totalExpenses }) => {
   return (
     <section className="chart-card">
       <div className="section-heading">
