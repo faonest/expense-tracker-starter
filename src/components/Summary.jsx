@@ -1,18 +1,8 @@
 import { currencyFormatter } from '../utils/formatters'
+import { getTransactionTotals } from '../utils/transactions'
 
 const Summary = ({ transactions }) => {
-  const totals = transactions.reduce((summary, transaction) => {
-    if (transaction.type === 'income') {
-      summary.income += transaction.amount
-    }
-
-    if (transaction.type === 'expense') {
-      summary.expenses += transaction.amount
-    }
-
-    return summary
-  }, { income: 0, expenses: 0 })
-
+  const totals = getTransactionTotals(transactions)
   const balance = totals.income - totals.expenses
 
   const cards = [

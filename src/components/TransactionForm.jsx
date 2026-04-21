@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { categories } from '../constants/categories'
 
-const TransactionForm = ({ categories, onAddTransaction }) => {
+const TransactionForm = ({ onAddTransaction }) => {
   const [description, setDescription] = useState('')
   const [amount, setAmount] = useState('')
   const [type, setType] = useState('expense')

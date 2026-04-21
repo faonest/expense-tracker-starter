@@ -10,10 +10,14 @@ import {
   YAxis,
 } from 'recharts'
 import { currencyFormatter, labelize } from '../utils/formatters'
+import { getSpendingByCategory, getTransactionTotals } from '../utils/transactions'
 
 const chartColors = ['#54e2df', '#7a6dff', '#ff89a6', '#ffb25c', '#6ac7ff', '#79f0b4', '#c09bff']
 
-const SpendingByCategoryChart = ({ data, totalExpenses }) => {
+const SpendingByCategoryChart = ({ transactions }) => {
+  const data = getSpendingByCategory(transactions)
+  const totals = getTransactionTotals(transactions)
+
   return (
     <section className="chart-card">
       <div className="section-heading">
@@ -22,7 +26,7 @@ const SpendingByCategoryChart = ({ data, totalExpenses }) => {
           <h2>Spending by Category</h2>
           <p>Expense totals grouped by category</p>
         </div>
-        <span className="chart-total">{currencyFormatter.format(totalExpenses)}</span>
+        <span className="chart-total">{currencyFormatter.format(totals.expenses)}</span>
       </div>
 
       <div className="chart-shell">

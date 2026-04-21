@@ -1,6 +1,9 @@
 import { currencyFormatter, labelize } from '../utils/formatters'
+import { getRecentTransactions } from '../utils/transactions'
 
 const Highlights = ({ transactions }) => {
+  const recentTransactions = getRecentTransactions(transactions)
+
   return (
     <section className="highlights-card">
       <div className="section-heading">
@@ -11,7 +14,7 @@ const Highlights = ({ transactions }) => {
       </div>
 
       <div className="highlight-list">
-        {transactions.map((transaction) => (
+        {recentTransactions.map((transaction) => (
           <div key={transaction.id} className="highlight-item">
             <div>
               <p className="highlight-title">{transaction.description}</p>

@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import './App.css'
-import { categories } from './constants/categories'
 import Highlights from './components/Highlights'
+import OverviewHero from './components/OverviewHero'
 import SpendingByCategoryChart from './components/SpendingByCategoryChart'
 import Summary from './components/Summary'
 import TransactionForm from './components/TransactionForm'
 import TransactionList from './components/TransactionList'
-import { currencyFormatter, labelize } from './utils/formatters'
 import { normalizeTransaction } from './utils/transactions'
 
 const App = () => {
@@ -21,56 +20,7 @@ const App = () => {
     { id: 8, description: 'Netflix', amount: 15, type: 'expense', category: 'entertainment', date: '2025-01-10' },
   ])
 
-  const [filterType, setFilterType] = useState('all')
-  const [filterCategory, setFilterCategory] = useState('all')
-
   const normalizedTransactions = transactions.map(normalizeTransaction)
-
-  const totals = normalizedTransactions.reduce((summary, transaction) => {
-    if (transaction.type === 'income') {
-      summary.income += transaction.amount
-    }
-
-    if (transaction.type === 'expense') {
-      summary.expenses += transaction.amount
-    }
-
-    return summary
-  }, { income: 0, expenses: 0 })
-
-  const totalIncome = totals.income
-  const totalExpenses = totals.expenses
-  const balance = totalIncome - totalExpenses
-
-  const spendingByCategory = normalizedTransactions
-    .filter((transaction) => transaction.type === 'expense')
-    .reduce((totalsByCategory, transaction) => {
-      const existingCategory = totalsByCategory.find((item) => item.name === transaction.category)
-
-      if (existingCategory) {
-        existingCategory.value += transaction.amount
-      } else {
-        totalsByCategory.push({ name: transaction.category, value: transaction.amount })
-      }
-
-      return totalsByCategory
-    }, [])
-    .sort((left, right) => right.value - left.value)
-
-  let filteredTransactions = normalizedTransactions
-  if (filterType !== 'all') {
-    filteredTransactions = filteredTransactions.filter((transaction) => transaction.type === filterType)
-  }
-  if (filterCategory !== 'all') {
-    filteredTransactions = filteredTransactions.filter((transaction) => transaction.category === filterCategory)
-  }
-
-  const recentTransactions = [...normalizedTransactions]
-    .sort((left, right) => new Date(right.date) - new Date(left.date))
-    .slice(0, 3)
-
-  const largestExpense = spendingByCategory[0]
-  const savingsRate = totalIncome > 0 ? Math.round((balance / totalIncome) * 100) : 0
 
   const handleAddTransaction = (transaction) => {
     setTransactions([...transactions, transaction])
@@ -82,57 +32,21 @@ const App = () => {
       <div className="app-backdrop app-backdrop-right" />
 
       <div className="app">
-        <section className="hero-card">
-          <div className="hero-copy">
-            <p className="eyebrow">Personal finance overview</p>
-            <h1>Finance Tracker</h1>
-            <p className="subtitle">
-              A cleaner view of income, spending, and where your money is going this month.
-            </p>
-          </div>
-
-          <div className="hero-panel">
-            <p className="hero-panel-label">Current balance</p>
-            <p className="hero-balance">{currencyFormatter.format(balance)}</p>
-            <div className="hero-insights">
-              <div className="hero-insight">
-                <span>Savings rate</span>
-                <strong>{savingsRate}%</strong>
-              </div>
-              <div className="hero-insight">
-                <span>Largest category</span>
-                <strong>{largestExpense ? labelize(largestExpense.name) : 'None'}</strong>
-              </div>
-            </div>
-          </div>
-        </section>
+        <OverviewHero transactions={normalizedTransactions} />
 
         <Summary transactions={normalizedTransactions} />
 
         <section className="content-grid">
           <div className="left-rail">
-            <TransactionForm
-              categories={categories}
-              onAddTransaction={handleAddTransaction}
-            />
+            <TransactionForm onAddTransaction={handleAddTransaction} />
 
-            <Highlights transactions={recentTransactions} />
+            <Highlights transactions={normalizedTransactions} />
           </div>
 
-          <SpendingByCategoryChart
-            data={spendingByCategory}
-            totalExpenses={totalExpenses}
-          />
+          <SpendingByCategoryChart transactions={normalizedTransactions} />
         </section>
 
-        <TransactionList
-          transactions={filteredTransactions}
-          categories={categories}
-          filterType={filterType}
-          filterCategory={filterCategory}
-          onFilterTypeChange={setFilterType}
-          onFilterCategoryChange={setFilterCategory}
-        />
+        <TransactionList transactions={normalizedTransactions} />
       </div>
     </main>
   )

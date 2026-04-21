@@ -1,13 +1,19 @@
+import { useState } from 'react'
+import { categories } from '../constants/categories'
 import { currencyFormatter, dateFormatter, labelize } from '../utils/formatters'
 
-const TransactionList = ({
-  transactions,
-  categories,
-  filterType,
-  filterCategory,
-  onFilterTypeChange,
-  onFilterCategoryChange,
-}) => {
+const TransactionList = ({ transactions }) => {
+  const [filterType, setFilterType] = useState('all')
+  const [filterCategory, setFilterCategory] = useState('all')
+
+  let filteredTransactions = transactions
+  if (filterType !== 'all') {
+    filteredTransactions = filteredTransactions.filter((transaction) => transaction.type === filterType)
+  }
+  if (filterCategory !== 'all') {
+    filteredTransactions = filteredTransactions.filter((transaction) => transaction.category === filterCategory)
+  }
+
   return (
     <section className="transactions">
       <div className="section-heading">
@@ -19,12 +25,12 @@ const TransactionList = ({
       </div>
 
       <div className="filters">
-        <select value={filterType} onChange={(event) => onFilterTypeChange(event.target.value)}>
+        <select value={filterType} onChange={(event) => setFilterType(event.target.value)}>
           <option value="all">All Types</option>
           <option value="income">Income</option>
           <option value="expense">Expense</option>
         </select>
-        <select value={filterCategory} onChange={(event) => onFilterCategoryChange(event.target.value)}>
+        <select value={filterCategory} onChange={(event) => setFilterCategory(event.target.value)}>
           <option value="all">All Categories</option>
           {categories.map((category) => (
             <option key={category} value={category}>{labelize(category)}</option>
@@ -44,7 +50,7 @@ const TransactionList = ({
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
+            {filteredTransactions.map((transaction) => (
               <tr key={transaction.id}>
                 <td>{dateFormatter.format(new Date(transaction.date))}</td>
                 <td className="transaction-description">{transaction.description}</td>
