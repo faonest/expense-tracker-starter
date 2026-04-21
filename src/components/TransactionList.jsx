@@ -1,10 +1,31 @@
 import { useState } from 'react'
+import Swal from 'sweetalert2'
 import { categories } from '../constants/categories'
 import { currencyFormatter, dateFormatter, labelize } from '../utils/formatters'
 
 const TransactionList = ({ transactions, onDeleteTransaction }) => {
   const [filterType, setFilterType] = useState('all')
   const [filterCategory, setFilterCategory] = useState('all')
+
+  const handleDeleteClick = async (transaction) => {
+    const result = await Swal.fire({
+      title: 'Delete transaction?',
+      text: `${transaction.description} will be removed from your tracker.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#ff5f8f',
+      cancelButtonColor: '#7a6dff',
+      background: '#0b122a',
+      color: '#eef2ff',
+      reverseButtons: true,
+    })
+
+    if (result.isConfirmed) {
+      onDeleteTransaction(transaction.id)
+    }
+  }
 
   let filteredTransactions = transactions
   if (filterType !== 'all') {
@@ -69,11 +90,7 @@ const TransactionList = ({ transactions, onDeleteTransaction }) => {
                   <button
                     type="button"
                     className="row-action-btn"
-                    onClick={() => {
-                      if (window.confirm('Delete this transaction?')) {
-                        onDeleteTransaction(transaction.id)
-                      }
-                    }}
+                    onClick={() => handleDeleteClick(transaction)}
                   >
                     Delete
                   </button>
