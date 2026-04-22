@@ -1,11 +1,15 @@
 export function normalizeTransaction(transaction) {
   const parsedAmount = Number(transaction.amount)
+  const normalizedType = typeof transaction.type === 'string' ? transaction.type.trim().toLowerCase() : ''
+  const normalizedCategory = typeof transaction.category === 'string'
+    ? transaction.category.trim().toLowerCase()
+    : ''
 
   return {
     ...transaction,
     amount: Number.isFinite(parsedAmount) ? Math.abs(parsedAmount) : 0,
-    type: typeof transaction.type === 'string' ? transaction.type.trim().toLowerCase() : '',
-    category: typeof transaction.category === 'string' ? transaction.category.trim().toLowerCase() : 'other',
+    type: normalizedType || 'expense',
+    category: normalizedCategory || 'other',
   }
 }
 
@@ -24,19 +28,16 @@ export function getTransactionTotals(transactions) {
 }
 
 export function getSpendingByCategory(transactions) {
-  return transactions
+  const totalsByCategory = transactions
     .filter((transaction) => transaction.type === 'expense')
-    .reduce((totalsByCategory, transaction) => {
-      const existingCategory = totalsByCategory.find((item) => item.name === transaction.category)
+    .reduce((categoryMap, transaction) => {
+      const currentTotal = categoryMap.get(transaction.category) ?? 0
+      categoryMap.set(transaction.category, currentTotal + transaction.amount)
+      return categoryMap
+    }, new Map())
 
-      if (existingCategory) {
-        existingCategory.value += transaction.amount
-      } else {
-        totalsByCategory.push({ name: transaction.category, value: transaction.amount })
-      }
-
-      return totalsByCategory
-    }, [])
+  return [...totalsByCategory.entries()]
+    .map(([name, value]) => ({ name, value }))
     .sort((left, right) => right.value - left.value)
 }
 

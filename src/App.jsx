@@ -23,11 +23,13 @@ const App = () => {
   const normalizedTransactions = transactions.map(normalizeTransaction)
 
   const handleAddTransaction = (transaction) => {
-    setTransactions([...transactions, transaction])
+    setTransactions((currentTransactions) => [...currentTransactions, transaction])
   }
 
   const handleDeleteTransaction = (transactionId) => {
-    setTransactions(transactions.filter((transaction) => transaction.id !== transactionId))
+    setTransactions((currentTransactions) => (
+      currentTransactions.filter((transaction) => transaction.id !== transactionId)
+    ))
   }
 
   return (
