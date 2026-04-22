@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Review"
+  short_description: "Review code for quality and maintainability"
+  default_prompt: "Use $code-review to review my code for bugs, readability, maintainability, performance, and best practices."
