@@ -1,0 +1,4 @@
+interface:
+  display_name: "Deploy"
+  short_description: "Run checks, build, and stage deploys"
+  default_prompt: "Use $deploy to run repo checks, build the production bundle, and push the result to staging."

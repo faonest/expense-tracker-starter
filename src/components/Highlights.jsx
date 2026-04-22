@@ -11,6 +11,7 @@ const Highlights = ({ transactions }) => {
           <p className="section-label">Highlights</p>
           <h2>Recent activity</h2>
         </div>
+        <p className="section-caption">A quick read on the latest movement in the ledger.</p>
       </div>
 
       <div className="highlight-list">
@@ -19,7 +20,7 @@ const Highlights = ({ transactions }) => {
             <div>
               <p className="highlight-title">{transaction.description}</p>
               <p className="highlight-meta">
-                {labelize(transaction.category)} • {transaction.date}
+                {labelize(transaction.category)} | {transaction.date}
               </p>
             </div>
             <strong className={transaction.type === 'income' ? 'income-amount' : 'expense-amount'}>

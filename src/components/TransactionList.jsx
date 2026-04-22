@@ -15,11 +15,17 @@ const TransactionList = ({ transactions, onDeleteTransaction }) => {
       showCancelButton: true,
       confirmButtonText: 'Delete',
       cancelButtonText: 'Cancel',
-      confirmButtonColor: '#ff5f8f',
-      cancelButtonColor: '#7a6dff',
-      background: '#0b122a',
-      color: '#eef2ff',
       reverseButtons: true,
+      buttonsStyling: false,
+      customClass: {
+        popup: 'ledger-modal',
+        title: 'ledger-modal-title',
+        htmlContainer: 'ledger-modal-copy',
+        confirmButton: 'ledger-modal-confirm',
+        cancelButton: 'ledger-modal-cancel',
+        actions: 'ledger-modal-actions',
+        icon: 'ledger-modal-icon',
+      },
     })
 
     if (result.isConfirmed) {

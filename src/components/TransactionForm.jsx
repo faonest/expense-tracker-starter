@@ -31,9 +31,9 @@ const TransactionForm = ({ onAddTransaction }) => {
       <div className="section-heading">
         <div>
           <p className="section-label">Entry</p>
-          <h2>Add transaction</h2>
+          <h2>Log a new line item</h2>
         </div>
-        <p className="section-caption">Capture a new income or expense in one pass.</p>
+        <p className="section-caption">Capture a new income or expense in a single clean pass.</p>
       </div>
 
       <form onSubmit={handleSubmit}>

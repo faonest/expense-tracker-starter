@@ -1,12 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600;700&display=swap');
 
 :root {
-  color: #eef2ff;
+  --bg: #071316;
+  --bg-deep: #041014;
+  --surface: rgba(10, 22, 27, 0.78);
+  --surface-strong: rgba(12, 27, 33, 0.92);
+  --surface-soft: rgba(255, 255, 255, 0.04);
+  --surface-highlight: rgba(255, 255, 255, 0.07);
+  --shadow: rgba(0, 0, 0, 0.42);
+  --ink: #eef3ef;
+  --ink-soft: #a9b8b1;
+  --ink-muted: #74847f;
+  --line: rgba(189, 216, 208, 0.12);
+  --line-strong: rgba(189, 216, 208, 0.22);
+  --mint: #5fd0b1;
+  --mint-soft: rgba(95, 208, 177, 0.12);
+  --ember: #ff8b5e;
+  --ember-soft: rgba(255, 139, 94, 0.12);
+  --gold: #dfbf67;
+  --gold-soft: rgba(223, 191, 103, 0.12);
+  --font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --font-display: 'IBM Plex Serif', Georgia, serif;
+  color: var(--ink);
   background:
-    radial-gradient(circle at 15% 10%, rgba(84, 226, 223, 0.22), transparent 24%),
-    radial-gradient(circle at 85% 20%, rgba(122, 109, 255, 0.28), transparent 26%),
-    linear-gradient(160deg, #060816 0%, #0c1230 52%, #141b3b 100%);
-  font-family: 'Manrope', 'Segoe UI', sans-serif;
+    radial-gradient(circle at top left, rgba(95, 208, 177, 0.1), transparent 24%),
+    radial-gradient(circle at 85% 10%, rgba(223, 191, 103, 0.1), transparent 26%),
+    radial-gradient(circle at 50% 100%, rgba(42, 91, 86, 0.22), transparent 40%),
+    linear-gradient(180deg, #051115 0%, #071316 45%, #09191f 100%);
+  font-family: var(--font-body);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -26,14 +47,14 @@ html {
 body {
   min-width: 320px;
   min-height: 100vh;
-  color: #eef2ff;
+  color: var(--ink);
 }
 
 body,
 button,
 input,
 select {
-  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  font-family: var(--font-body);
 }
 
 button,
